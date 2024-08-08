@@ -44,7 +44,15 @@ class ViewController: UIViewController {
     
     
     private func presentVideoPicker() {
+        var config = PHPickerConfiguration(photoLibrary: .shared())
+        config.filter = .videos
+        config.preferredAssetRepresentationMode = .current
+        config.selectionLimit = 5
+        config.preselectedAssetIdentifiers = selectedAssetIdentifiers
         
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 
 }
