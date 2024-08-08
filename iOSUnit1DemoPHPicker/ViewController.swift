@@ -57,6 +57,27 @@ class ViewController: UIViewController {
 
 }
 
+extension ViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true)
+        
+        let existingSelection = self.selection
+        var newSelection = [String: PHPickerResult]()
+        for result in results {
+            let identifier = result.assetIdentifier!
+            newSelection[identifier] = existingSelection[identifier] ?? result
+        }
+        
+        // Track the selection in case the user deselects it later.
+        selection = newSelection
+        selectedAssetIdentifiers = results.map(\.assetIdentifier!)
+        selectedAssetIdentifierIterator = selectedAssetIdentifiers.makeIterator()
+        
+        displayNextVideo()
+        
+    }
+}
+
 extension ViewController {
     
     /// Show an alert for the given error
